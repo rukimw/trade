@@ -1,4 +1,4 @@
-name: Build Android APK
+name: Build Native Android APK
 
 on:
   push:
@@ -13,45 +13,28 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-
       - name: Setup Java JDK 17
         uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
           java-version: '17'
 
-      - name: Find Project Root, Build & Create APK
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.7'
+
+      - name: Build Debug APK
         run: |
-          # package.json ඇති Folder එක ස්වයංක්‍රීයව සොයා එයට ඇතුළු වීම
-          PROJECT_DIR=$(dirname $(find . -name "package.json" -not -path "*/node_modules/*" | head -n 1))
-          echo "Found project in: $PROJECT_DIR"
-          cd "$PROJECT_DIR"
-
-          # Web App එක Build කිරීම
-          npm install
-          npm run build
-
-          # Build output folder එක (dist හෝ build) හඳුනා ගැනීම
-          WEB_DIR="dist"
-          if [ -d "build" ]; then WEB_DIR="build"; fi
-
-          # Capacitor ස්ථාපනය කර Android Project එක සෑදීම
-          npm install @capacitor/core @capacitor/cli @capacitor/android
-          npx cap init "PaperTradingSim" "com.simulator.papertrading" --web-dir=$WEB_DIR
-          npx cap add android
-          npx cap sync android
-
-          # Debug APK එක Build කිරීම
-          cd android
-          chmod +x gradlew
-          ./gradlew assembleDebug
+          if [ -f "./gradlew" ]; then
+            chmod +x ./gradlew
+            ./gradlew assembleDebug
+          else
+            gradle assembleDebug
+          fi
 
       - name: Upload APK Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: PaperTradingSim-APK
-          path: "**/android/app/build/outputs/apk/debug/app-debug.apk"
+          name: PaperTrade-APK
+          path: app/build/outputs/apk/debug/app-debug.apk
