@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">PaperTrade</string>
+    <string name="educational_banner">EDUCATIONAL PAPER-TRADING SIMULATOR - VIRTUAL CURRENCY ONLY</string>
+    <string name="virtual_balance_label">Virtual Balance</string>
+    <string name="total_earned_label">Total Earned</string>
+    <string name="simulate_deposit_cta">Simulate Deposit (+$100 Virtual)</string>
+    <string name="reset_account_cta">Reset Account</string>
+    <string name="trading_switch_title">Daily Bot Trading Switch</string>
+    <string name="min_balance_warning">Minimum $100.00 virtual balance required to activate.</string>
+    <string name="market_closed_warning">Market Closed: Trading switch is only available on weekdays (Mon-Fri).</string>
+    <string name="active_target_reached">Active - Daily Target Reached (+$1.00)</string>
+    <string name="simulate_next_day_cta">Simulate Next Day</string>
+    <string name="activity_log_title">Activity &amp; Transaction Log</string>
+    <string name="simulator_day_override_title">Simulator Day Override</string>
+</resources>

@@ -1,0 +1,6 @@
+{
+  "name": "PaperTrade",
+  "description": "Educational dark-themed virtual paper-trading simulator with weekday bot switch, simulated deposits, and persistent transaction ledger.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
