@@ -24,8 +24,13 @@ jobs:
         with:
           gradle-version: '9.3.1'
 
-      - name: Build Debug APK
-        run: gradle assembleDebug
+      - name: Create missing env files & Build Debug APK
+        run: |
+          touch .env.example
+          touch .env
+          echo "GEMINI_API_KEY=dummy_key" >> .env.example
+          echo "GEMINI_API_KEY=dummy_key" >> .env
+          gradle assembleDebug
 
       - name: Upload APK Artifact
         uses: actions/upload-artifact@v4
