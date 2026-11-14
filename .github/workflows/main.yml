@@ -24,20 +24,28 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
 
-      - name: Install dependencies & Build Web App
+      - name: Find Project Root, Build & Create APK
         run: |
+          # package.json ඇති Folder එක ස්වයංක්‍රීයව සොයා එයට ඇතුළු වීම
+          PROJECT_DIR=$(dirname $(find . -name "package.json" -not -path "*/node_modules/*" | head -n 1))
+          echo "Found project in: $PROJECT_DIR"
+          cd "$PROJECT_DIR"
+
+          # Web App එක Build කිරීම
           npm install
           npm run build
 
-      - name: Install Capacitor & Configure Android
-        run: |
+          # Build output folder එක (dist හෝ build) හඳුනා ගැනීම
+          WEB_DIR="dist"
+          if [ -d "build" ]; then WEB_DIR="build"; fi
+
+          # Capacitor ස්ථාපනය කර Android Project එක සෑදීම
           npm install @capacitor/core @capacitor/cli @capacitor/android
-          npx cap init "PaperTradingSim" "com.simulator.papertrading" --web-dir=dist
+          npx cap init "PaperTradingSim" "com.simulator.papertrading" --web-dir=$WEB_DIR
           npx cap add android
           npx cap sync android
 
-      - name: Build Debug APK
-        run: |
+          # Debug APK එක Build කිරීම
           cd android
           chmod +x gradlew
           ./gradlew assembleDebug
@@ -46,4 +54,5 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: PaperTradingSim-APK
+          path: "**/android/app/build/outputs/apk/debug/app-debug.apk"
           path: android/app/build/outputs/apk/debug/app-debug.apk
